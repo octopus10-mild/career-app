@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>キャリア診断 & リサーチ</title>
+    <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+    <header>
+        <h1>キャリア診断 & リサーチ</h1>
+    </header>
+
+    <main class="grid">
+        <!-- 左：調べ物チャット -->
+        <section class="card">
+            <h2>チャット欄（LLMに質問）</h2>
+            <div id="chat-area" class="chat">
+                <div class="msg bot">こんにちは。調べたいことを日本語で入力してください。</div>
+            </div>
+            <form id="chat-form" class="row">
+                <input id="chat-input" type="text" placeholder="例：UXデザイナーの仕事内容を教えて" />
+                <button type="submit">送信</button>
+            </form>
+        </section>
+
+        <!-- 右：職業診断 -->
+        <section class="card">
+            <div class="row between">
+                <h2>職業を診断する</h2>
+                <button id="start-btn" class="primary">診断スタート</button>
+            </div>
+
+            <div id="quiz-area" class="quiz hidden">
+                <div id="question" class="question"></div>
+                <div id="choices" class="choices"></div>      <!--ここに四択質問が表示される-->
+                <div class="row between">
+                    <button id="prev-btn" class="ghost" disabled>戻る</button>
+                    <span id="progress"></span>
+                    <button id="next-btn" class="primary" disabled>次へ</button>
+                </div>
+            </div>
+
+            <div id="result-area" class="result hidden"></div>
+
+            <div id="review-area" class="review hidden">
+                <div id="review-body" class="review choices"></div>
+                <div class="row between">
+                    <button id="back" class="ghost">結果を確認する</button>
+                    <button id="submit" class="primary">回答を終了する</button>
+                </div>
+            </div>
+
+            <div id="answer-area" class="answer hidden"></div>
+            
+        </section>
+    </main>
+
+    <footer>
+        <small>Sample app. Customize freely.</small>
+    </footer>
+
+    <script src="./test.js" type="module"></script>
+</body>
+
+</html>

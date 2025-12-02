@@ -1,0 +1,393 @@
+{
+    "active_listening": {
+        "name_jp": "能動的傾聴",
+        "name_en": "Active Listening",
+        "category": "Skills",
+        "definition": "相手の話に注意深く耳を傾け、内容や意図を理解しようとする能力。",
+        "question_normal": "相手の話を遮らず、内容を理解しようと努めることが多い。",
+        "question_reverse": "話を十分に聞く前に、自分の意見を言ってしまうことが多い。",
+        "jobs": [
+            "カスタマーサービス担当",
+            "カウンセラー",
+            "看護師"
+        ]
+    },
+    "speaking": {
+        "name_jp": "説明力",
+        "name_en": "Speaking",
+        "category": "Skills",
+        "definition": "相手に情報を明確かつ分かりやすく伝える能力。",
+        "question_normal": "複雑な内容でも相手に分かりやすく説明できる。",
+        "question_reverse": "説明が回りくどく、伝わりにくいと言われることが多い。",
+        "jobs": [
+            "教員",
+            "営業担当",
+            "トレーナー"
+        ]
+    },
+    "social_perceptiveness": {
+        "name_jp": "社会的知覚",
+        "name_en": "Social Perceptiveness",
+        "category": "Skills",
+        "definition": "他者の反応や感情の変化に気づき、その理由を理解する能力。",
+        "question_normal": "表情や態度から相手の気持ちを察することが多い。",
+        "question_reverse": "相手の感情の変化に気づかず、誤解を生むことが多い。",
+        "jobs": [
+            "セラピスト",
+            "人事担当",
+            "ソーシャルワーカー"
+        ]
+    },
+    "coordination": {
+        "name_jp": "協調・調整力",
+        "name_en": "Coordination",
+        "category": "Skills",
+        "definition": "他者の行動に合わせて、自分の行動を調整する能力。",
+        "question_normal": "チームの動きに合わせて自分の作業を調整できる。",
+        "question_reverse": "相手に合わせるのが苦手で、自分のペースを崩せないことが多い。",
+        "jobs": [
+            "プロジェクトコーディネーター",
+            "医療チームスタッフ",
+            "レストランマネージャー"
+        ]
+    },
+    "persuasion": {
+        "name_jp": "説得",
+        "name_en": "Persuasion",
+        "category": "Skills",
+        "definition": "他者に考えや行動の変化を促す能力。",
+        "question_normal": "提案時に、相手を納得させることが得意だ。",
+        "question_reverse": "自分の意見をうまく伝えられず、説得がうまくいかない。",
+        "jobs": [
+            "営業",
+            "マーケター",
+            "コンサルタント"
+        ]
+    },
+    "negotiation": {
+        "name_jp": "交渉",
+        "name_en": "Negotiation",
+        "category": "Skills",
+        "definition": "利害の異なる人々をまとめ、合意形成に導く能力。",
+        "question_normal": "対立が起きた際、双方の立場を調整してまとめる役になる。",
+        "question_reverse": "話し合いや交渉を避け、問題を先延ばしにしがち。",
+        "jobs": [
+            "人事",
+            "交渉仲介者",
+            "ビジネスディベロップメント"
+        ]
+    },
+    "instructing": {
+        "name_jp": "指導力",
+        "name_en": "Instructing",
+        "category": "Skills",
+        "definition": "他者にやり方を教え、理解を支援する能力。",
+        "question_normal": "初心者にも分かるように教えることが得意だ。",
+        "question_reverse": "教える際に『なんで分からないの？』と思ってしまいがちだ。",
+        "jobs": [
+            "教師",
+            "企業トレーナー",
+            "スーパーバイザー"
+        ]
+    },
+    "service_orientation": {
+        "name_jp": "サービス志向",
+        "name_en": "Service Orientation",
+        "category": "Skills",
+        "definition": "他者を助ける方法を積極的に探し、行動する姿勢。",
+        "question_normal": "困っている人がいれば、自然に助けようとする。",
+        "question_reverse": "他人のトラブルには関わらないようにする。",
+        "jobs": [
+            "カスタマーサポート",
+            "ホテルスタッフ",
+            "医療サポート職"
+        ]
+    },
+    "cooperation": {
+        "name_jp": "協力性",
+        "name_en": "Cooperation",
+        "category": "Work Styles",
+        "definition": "他者に対して友好的で協力的な姿勢をもつ特性。",
+        "question_normal": "チームのために自分の予定を調整できる。",
+        "question_reverse": "自分のやり方を優先して、周囲に合わせにくい。",
+        "jobs": [
+            "医療チーム",
+            "教育職",
+            "コミュニティ支援職"
+        ]
+    },
+    "concern_for_others": {
+        "name_jp": "他者配慮",
+        "name_en": "Concern for Others",
+        "category": "Work Styles",
+        "definition": "他者のニーズや感情に敏感で、思いやりをもって接する特性。",
+        "question_normal": "相手の気持ちに気づき、必要なサポートができる。",
+        "question_reverse": "他人の感情に興味がなく、距離を置きがちだ。",
+        "jobs": [
+            "ソーシャルワーカー",
+            "看護師",
+            "カウンセラー"
+        ]
+    },
+    "integrity": {
+        "name_jp": "誠実性",
+        "name_en": "Integrity",
+        "category": "Work Styles",
+        "definition": "誠実で倫理的に行動し、ルールや信頼を守ろうとする姿勢。",
+        "question_normal": "ルールを守り、公正に行動することを大切にしている。",
+        "question_reverse": "自分の目的のためなら、多少ルールを曲げてもよいと思うことがある。",
+        "jobs": [
+            "公務員",
+            "警察官",
+            "会計・監査職"
+        ]
+    },
+    "dependability": {
+        "name_jp": "信頼性",
+        "name_en": "Dependability",
+        "category": "Work Styles",
+        "definition": "責任感が強く、期限や約束を確実に守る姿勢。",
+        "question_normal": "締め切りや約束を必ず守るほうだ。",
+        "question_reverse": "期限に遅れたり、約束を忘れてしまうことが多い。",
+        "jobs": [
+            "行政職",
+            "医療スタッフ",
+            "財務・会計職"
+        ]
+    },
+    "self_control": {
+        "name_jp": "自己統制",
+        "name_en": "Self-Control",
+        "category": "Work Styles",
+        "definition": "ストレス状況や対立状況でも、冷静さを保ち感情を適切にコントロールする特性。",
+        "question_normal": "イライラしても、表情や態度に出さず冷静に対応できる。",
+        "question_reverse": "怒りや不満がすぐ行動や言葉に出てしまうことがある。",
+        "jobs": [
+            "医療従事者",
+            "接客サービス職",
+            "教員"
+        ]
+    },
+    "stress_tolerance": {
+        "name_jp": "ストレス耐性",
+        "name_en": "Stress Tolerance",
+        "category": "Work Styles",
+        "definition": "プレッシャーや困難な状況の中でも、効果的に行動できる特性。",
+        "question_normal": "トラブルが起きても、慌てずに対応できるほうだ。",
+        "question_reverse": "予期せぬ問題が起きると、あわてて思考が止まってしまうことが多い。",
+        "jobs": [
+            "救急医療スタッフ",
+            "医療管理者",
+            "カスタマーサポート"
+        ]
+    },
+    "adaptability_flexibility": {
+        "name_jp": "柔軟性",
+        "name_en": "Adaptability/Flexibility",
+        "category": "Work Styles",
+        "definition": "予期せぬ変化や環境の違いにスムーズに適応できる特性。",
+        "question_normal": "予定や状況が急に変わっても、柔軟に対応できる。",
+        "question_reverse": "計画が崩れると混乱しやすく、元のやり方にこだわってしまう。",
+        "jobs": [
+            "プロジェクトマネージャー",
+            "看護師",
+            "営業職"
+        ]
+    },
+    "independence": {
+        "name_jp": "自律性",
+        "name_en": "Independence",
+        "category": "Work Styles",
+        "definition": "他人の細かい指示を必要とせず、自分で判断し行動できる特性。",
+        "question_normal": "与えられた仕事を自分で計画して進めるのが得意だ。",
+        "question_reverse": "細かい指示がないと動きづらく、不安になることが多い。",
+        "jobs": [
+            "研究職",
+            "エンジニア",
+            "ライター"
+        ]
+    },
+    "initiative": {
+        "name_jp": "主体性",
+        "name_en": "Initiative",
+        "category": "Work Styles",
+        "definition": "他者に言われなくても、自分から積極的に行動する姿勢。",
+        "question_normal": "指示を待たずに、自分でやるべきことを見つけて動ける。",
+        "question_reverse": "誰かに指示されないと、なかなか行動を起こせない。",
+        "jobs": [
+            "起業家",
+            "プロダクトマネージャー",
+            "フィールドワーカー"
+        ]
+    },
+    "leadership": {
+        "name_jp": "リーダーシップ",
+        "name_en": "Leadership",
+        "category": "Work Styles",
+        "definition": "他者を導き、チームの方向性や行動を調整する力。",
+        "question_normal": "必要な場面では、自分から前に出て周囲をまとめることが多い。",
+        "question_reverse": "責任を負う立場を避け、リーダー役を引き受けたくないと感じることが多い。",
+        "jobs": [
+            "マネージャー",
+            "事業部長",
+            "プロジェクトリーダー"
+        ]
+    },
+    "critical_thinking": {
+        "name_jp": "批判的思考",
+        "name_en": "Critical Thinking",
+        "category": "Skills",
+        "definition": "複数の選択肢や情報を検討し、論理的に妥当な結論を導く能力。",
+        "question_normal": "判断が必要なとき、根拠やデータに基づいて考えることが多い。",
+        "question_reverse": "深く考えるよりも、その場の感覚で物事を決めてしまうことが多い。",
+        "jobs": [
+            "経営アナリスト",
+            "データサイエンティスト",
+            "医師"
+        ]
+    },
+    "complex_problem_solving": {
+        "name_jp": "複雑問題解決",
+        "name_en": "Complex Problem Solving",
+        "category": "Skills",
+        "definition": "複雑な問題の原因を特定し、解決策を立てて実行する能力。",
+        "question_normal": "複雑な問題でも、情報を整理して解決方法を考えられる。",
+        "question_reverse": "複雑な状況を見ると、どこから手を付ければいいか分からず動けなくなることが多い。",
+        "jobs": [
+            "研究開発職",
+            "プロジェクトマネージャー",
+            "システムアナリスト"
+        ]
+    },
+    "judgment_decision_making": {
+        "name_jp": "判断・意思決定",
+        "name_en": "Judgment and Decision Making",
+        "category": "Skills",
+        "definition": "選択肢のコストと利益を比較し、最も適切な判断を下す能力。",
+        "question_normal": "複数の選択肢を比較し、合理的な判断ができる。",
+        "question_reverse": "感情的になって判断し、後で後悔することが多い。",
+        "jobs": [
+            "経営管理職",
+            "医療管理者",
+            "プロジェクトマネージャー"
+        ]
+    },
+    "reading_comprehension": {
+        "name_jp": "読解力",
+        "name_en": "Reading Comprehension",
+        "category": "Skills",
+        "definition": "文章や資料を読み、内容や意図を正確に理解する能力。",
+        "question_normal": "説明書や文章を読み、正確に内容を把握することが得意だ。",
+        "question_reverse": "文章を読んでも意図がつかみにくいと感じることが多い。",
+        "jobs": [
+            "研究者",
+            "ライター",
+            "教育者"
+        ]
+    },
+    "writing": {
+        "name_jp": "文章表現",
+        "name_en": "Writing",
+        "category": "Skills",
+        "definition": "文章を明確かつ効果的に書いて相手に伝える能力。",
+        "question_normal": "読みやすく整理された文章を書ける。",
+        "question_reverse": "文章がまとまらず、伝わりにくいと言われることが多い。",
+        "jobs": [
+            "コピーライター",
+            "コンテンツライター",
+            "研究者"
+        ]
+    },
+    "active_learning": {
+        "name_jp": "能動的学習",
+        "name_en": "Active Learning",
+        "category": "Skills",
+        "definition": "新しい情報を素早く吸収し、作業や仕事に応用する能力。",
+        "question_normal": "新しい知識を学び、すぐに実務に生かすことが多い。",
+        "question_reverse": "新しいことを覚えるのに時間がかかると感じることが多い。",
+        "jobs": [
+            "ITエンジニア",
+            "医療スタッフ",
+            "教育・研修担当"
+        ]
+    },
+    "learning_strategies": {
+        "name_jp": "学習戦略",
+        "name_en": "Learning Strategies",
+        "category": "Skills",
+        "definition": "効率よく学習するための方法を選び、実行する能力。",
+        "question_normal": "効率の良い学び方を自分で工夫できる。",
+        "question_reverse": "学習方法を変えられず、非効率的なやり方に固執してしまう。",
+        "jobs": [
+            "教員",
+            "研修トレーナー",
+            "学習コーチ"
+        ]
+    },
+    "deductive_reasoning": {
+        "name_jp": "演繹的推論",
+        "name_en": "Deductive Reasoning",
+        "category": "Abilities",
+        "definition": "一般的な規則を特定の状況に当てはめ、筋の通った結論を導く能力。",
+        "question_normal": "原則やルールを使って具体的な結論を導くのが得意だ。",
+        "question_reverse": "ルールを当てはめるのが苦手で、感覚で判断しがちだ。",
+        "jobs": [
+            "裁判官",
+            "放射線科医",
+            "病理医"
+        ]
+    },
+    "inductive_reasoning": {
+        "name_jp": "帰納的推論",
+        "name_en": "Inductive Reasoning",
+        "category": "Abilities",
+        "definition": "複数の情報からパターンを見つけ、一般的な結論を導く能力。",
+        "question_normal": "バラバラの情報から共通点や法則を見つけるのが得意だ。",
+        "question_reverse": "情報のつながりを見つけるのが苦手で、個別の情報として扱ってしまう。",
+        "jobs": [
+            "データサイエンティスト",
+            "統計学者",
+            "疫学研究者"
+        ]
+    },
+    "problem_sensitivity": {
+        "name_jp": "問題察知力",
+        "name_en": "Problem Sensitivity",
+        "category": "Abilities",
+        "definition": "問題が発生した際や、今後問題になりそうな状況を素早く察知する能力。",
+        "question_normal": "問題になりそうな点にすぐ気づくことが多い。",
+        "question_reverse": "問題に気づくのが遅く、対処が後手に回りがちだ。",
+        "jobs": [
+            "救急医療スタッフ",
+            "保安検査官",
+            "システムアナリスト"
+        ]
+    },
+    "category_flexibility": {
+        "name_jp": "カテゴリー柔軟性",
+        "name_en": "Category Flexibility",
+        "category": "Abilities",
+        "definition": "複数の分類を柔軟に組み替え、新しい概念やグループを作る能力。",
+        "question_normal": "物事を違った視点から分類し、新しいアイデアを生み出せる。",
+        "question_reverse": "一度決めた分類方法に固執してしまい、新しい見方ができない。",
+        "jobs": [
+            "デザイナー",
+            "マーケター",
+            "研究者"
+        ]
+    },
+    "fluency_of_ideas": {
+        "name_jp": "発想流暢性",
+        "name_en": "Fluency of Ideas",
+        "category": "Abilities",
+        "definition": "複数のアイデアや解決策を素早くたくさん出す能力。",
+        "question_normal": "アイデアを次々と出すのが得意だ。",
+        "question_reverse": "アイデアがすぐに思い浮かばず、時間がかかることが多い。",
+        "jobs": [
+            "クリエイティブディレクター",
+            "プロダクトデザイナー",
+            "コンテンツクリエイター"
+        ]
+    }
+}
+
