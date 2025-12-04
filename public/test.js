@@ -360,3 +360,10 @@ remainBtn.addEventListener("click", () => {
     reviewArea.classList.add("hidden");
     resultArea.classList.remove("hidden");
 })
+const debugResultBtn = document.getElementById("debug-result-btn");
+
+if (debugResultBtn) {
+    debugResultBtn.addEventListener("click", () => {
+        calcAndShowResult();
+    });
+}
