@@ -42,30 +42,6 @@ chatForm.addEventListener("submit", async (e) => {  //formが送信されたと�
 // 軸: A=分析/論理, B=創造/表現, C=対人/協働, D=実務/手を動かす
 
 
-// 軸→おすすめ職業（例）
-const CAREERS = {
-    A: {
-        title: "分析・設計タイプ",
-        jobs: ["データアナリスト", "バックエンドエンジニア", "業務コンサル", "QA/テストエンジニア"],
-        pitch: "論理性と再現性を武器に、課題を構造化して解決する役割に強みがあります。",
-    },
-    B: {
-        title: "クリエイティブタイプ",
-        jobs: ["UI/UXデザイナー", "コンテンツクリエイター", "フロントエンドエンジニア", "プロダクトデザイナー"],
-        pitch: "発想力と試作の速さが武器。ユーザー体験や表現が価値になる領域で活躍できます。",
-    },
-    C: {
-        title: "コミュニケーションタイプ",
-        jobs: ["カスタマーサクセス", "営業/アカウントプランナー", "採用/人事", "プロジェクトマネージャー"],
-        pitch: "関係構築と合意形成が得意。人と成果をつなぐハブの役割で力を発揮します。",
-    },
-    D: {
-        title: "実務・現場タイプ",
-        jobs: ["製造/生産技術", "フィールドエンジニア", "施工管理", "サプライチェーン/ロジスティクス"],
-        pitch: "手触りのある成果や改善が得意。現場での検証や運用に強みがあります。",
-    },
-};
-
 const startBtn = document.getElementById("start-btn");   //診断スタートボタン
 const quizArea = document.getElementById("quiz-area");   //質問エリア
 const resultArea = document.getElementById("result-area"); //診断結果表示
@@ -79,6 +55,11 @@ const reviewEl = document.getElementById("review-body");  //アプリ評価質�
 const answerBtn = document.getElementById("submit");  //アプリ評価ボタン
 const remainBtn = document.getElementById("back");   //結果を再確認ボタン
 const appreciateArea = document.getElementById("answer-area");  //お礼エリア
+const partialBtn = document.getElementById("debug-result-btn"); //途中結果確認ボタン
+
+// GoogleフォームのURL（自分のフォームURLに差し替える）
+const SURVEY_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc0dIa7AWO0a0Myu4HRuhKtlF6sbAxyr5pK8CoPrBHNwS3X6A/viewform?usp=header";
+
 
 
 let idx = 0;    //質問番号
@@ -125,6 +106,17 @@ async function loadQuestions() {
     QUESTIONS = questions;
 }
 
+function updatePartialResultButton() {
+    if (!partialBtn) return;  // ボタンがない画面なら何もしない
+
+    const answeredCount = picks.filter(v => v != null).length;
+    const isAfterFourthQuestion = idx >= 3; // 0,1,2,3... → 3 が4問目
+
+    // 条件を両方満たしたときだけ有効にする
+    partialBtn.disabled = !(answeredCount >= 4 && isAfterFourthQuestion);
+}
+
+
 function render() {
     const item = QUESTIONS[idx];    //配列QUESTIONSのidx番号の内容を変数itemに格納   質問が上から順番に表示されるようになっている
     questionEl.textContent = item.text;  //idx（配列番号）の質問qを書き換え
@@ -142,6 +134,8 @@ function render() {
             document.querySelectorAll(".choice").forEach(e1 => e1.classList.remove("active"));
             btn.classList.add("active");
             nextBtn.disabled = false;
+
+            updatePartialResultButton();
         })
         choicesEl.appendChild(btn);
     });
@@ -149,9 +143,12 @@ function render() {
     nextBtn.textContent = (idx === QUESTIONS.length - 1) ? "結果を見る" : "次へ";   //idxがQUESTIONの数と同じになったら結果を見るに書き換える
     nextBtn.disabled = picks[idx] == null;      //userが回答を選択していなければ、picks[idx]の中身は空になるので,disabledがtrueになり、次へのボタンが選択されない
     progressEl.textContent = `${idx + 1} / ${QUESTIONS.length}`;     //ページ数の表示
+
+    updatePartialResultButton();
 }
 
-function calcAndShowResult() {
+function calcAndShowResult(options = {}) {
+    const { partial = false } = options;  //引数にoption.partialが無ければpartialはfalseを返す
     // スコア初期化
     const abilityScores = {};
 
@@ -199,9 +196,10 @@ function calcAndShowResult() {
     const top1 = result[0];
     const top2 = result[1];
 
-//何回診断しても書き換えれるから診断可能
+//何回診断しても書き換えれるから診断可能    partialがtrueを返せば、暫定文が入る
     resultArea.innerHTML = `
     <h3>診断結果</h3>
+    ${partial ? '<p style="color:#666; font-size: 0.9rem;">※まだ全ての質問に回答していないため、暫定的な結果です。</p>' : ''}   
 
     <p><strong>あなたの最も強い能力（第1位）</strong></p>
     <h4>${top1.name_jp}</h4>
@@ -283,29 +281,30 @@ function calcAndShowResult() {
     });
 
     document.getElementById("review").addEventListener("click", () => {
-        const item = REVIEW[0];
+        reviewEl.innerHTML = `
+            <h3>アンケートのお願い</h3>
+            <p>
+                このアプリの使い心地について、簡単なアンケートにご協力いただけると嬉しいです。<br>
+                アンケートは <strong>任意</strong> で、所要時間は 1〜2 分程度です。
+            </p>
+            <button id="open-form-btn" class="primary">
+                アンケートフォームを開く（別タブで表示）
+            </button>
+            <p style="margin-top:8px; font-size:0.9rem;">
+                ※「結果を確認する」を押すとアンケートに進まず診断結果に戻れます。<br>
+                ※「回答を終了する」を押すと、このアプリの画面は終了し、お礼メッセージが表示されます。
+            </p>
+        `;
 
-        reviewEl.innerHTML = "";
-
+        // 画面の切り替え
         reviewArea.classList.remove("hidden");
         resultArea.classList.add("hidden");
         quizArea.classList.add("hidden");
 
-        const div = document.createElement("div");
-        div.className = "question";
-        div.textContent = item.q;
-        reviewEl.appendChild(div);
-        
-        item.choices.forEach((text) => {
-            const btn = document.createElement("button");
-            btn.className = "choice";
-            btn.textContent = text.label;
-
-            btn.addEventListener("click", () => {
-                document.querySelectorAll(".choice").forEach(e => e.classList.remove("active"));  //どのbuttonからもactiveを消す
-                btn.classList.add("active");
-            });
-            reviewEl.appendChild(btn);
+        // Googleフォームを新しいタブで開くボタン
+        const openFormBtn = document.getElementById("open-form-btn");
+        openFormBtn.addEventListener("click", () => {
+            window.open(SURVEY_URL, "_blank", "noopener,noreferrer");
         });    
     });
 
@@ -351,7 +350,12 @@ answerBtn.addEventListener("click", () => {
     reviewArea.classList.add("hidden");
     appreciateArea.classList.remove("hidden");
     appreciateArea.innerHTML = `
-    <h2>ご回答に協力いただきありがとうございました！</h2>
+        <h2>ご利用ありがとうございました！</h2>
+        <p>
+            アプリを最後までご利用いただき、ありがとうございました。<br>
+            アンケートへのご協力（またはご検討）にも心より感謝いたします。<br>
+            このアプリが、今後のキャリアを考えるきっかけになれば幸いです。
+        </p>
     `;
 });
 
@@ -360,10 +364,13 @@ remainBtn.addEventListener("click", () => {
     reviewArea.classList.add("hidden");
     resultArea.classList.remove("hidden");
 })
-const debugResultBtn = document.getElementById("debug-result-btn");
 
-if (debugResultBtn) {
-    debugResultBtn.addEventListener("click", () => {
-        calcAndShowResult();
+if (partialBtn) {
+    partialBtn.addEventListener("click", () => {
+        if (partialBtn.disabled) return;
+
+        calcAndShowResult({partial: true });
+
+        startBtn.disabled = false;
     });
 }

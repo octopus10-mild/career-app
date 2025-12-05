@@ -37,10 +37,11 @@ h2 {
 }
 
 main.grid {
-    display: grid; /* グリッドレイアウト(アイテム化)の有効化 */
+    display: flex; /* グリッドレイアウト(アイテム化)の有効化 */
     gap: 16px;   /*グリッドの隙間*/
     padding: 16px;
-    grid-template-columns: 1fr 1fr;
+
+    align-items: start;
 }
 
 /* グリッドで区切られたsection */
@@ -49,6 +50,8 @@ main.grid {
     border-radius: 16px;  /*要素の角を丸くする*/
     padding: 16px;
     box-shadow: 0 6px 22px rgba(0, 0, 0, .06);
+
+    flex: 1;
 }
 
 .row {
@@ -75,14 +78,42 @@ button.primary {
     border-color: transparent;
 }
 
-button.ghost {
-    background: #fff;
-    color: var(--muted);
-}
+
 
 button:disabled {
     opacity: .6;
     cursor: not-allowed;
+}
+
+#debug-result-btn {
+    /* position 系をやめる */
+    /* position: absolute; も right/bottom も削除 */
+
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid #dcddea;
+    background: #e5e9e4;
+    cursor: pointer;
+
+    /* ghost + 右寄せにしたい場合 */
+    display: block;
+    margin: 12px 0 0 auto;
+    /* 上に余白＋右寄せ */
+}
+
+button.ghost {
+    background: #fff;
+    color: var(--muted);
+}
+/* enabled（有効）状態の debug ボタンを明るくする */
+#debug-result-btn:not(:disabled) {
+    background: var(--pri);
+    /* 次へボタンと同じ青色 */
+    color: #fff;
+    border: none;
+    opacity: 1;
+    /* 薄暗さリセット */
+    cursor: pointer;
 }
 
 input[type="text"] {
@@ -92,14 +123,27 @@ input[type="text"] {
     border: 1px solid #dcddea;
 }
 
-.chat {
-    height: 400px;
-    overflow: auto;  /* 要素の高さが320pxを超えた時、自動スクロールする機能  */
+.panel {
     border: 1px solid #ececf3;
     border-radius: 12px;
     padding: 12px;
     background: #fff;
-    margin-bottom: 8px; /*インプット欄との間を少し開けている*/
+}
+
+.chat {
+    /* 高さを固定ではなく、最大値だけ決める */
+    max-height: 100vh;
+    /* 画面の高さの 60% まで伸びる */
+    min-height: 400px;
+    /* 最低でもこれくらいの高さを確保 */
+    overflow-y: auto;
+    /* はみ出たらチャット欄だけスクロール */
+
+    border: 1px solid #ececf3;
+    border-radius: 12px;
+    padding: 12px;
+    background: #fff;
+    margin-bottom: 8px;
 }
 
 .msg {
@@ -162,7 +206,7 @@ input[type="text"] {
 
 @media (max-width: 900px) {
     main.grid {
-        grid-template-columns: 1fr;
+        flex-direction: column;
     }
 }
 /*displayの上書き阻止*/
