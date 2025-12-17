@@ -106,6 +106,7 @@ async function loadQuestions() {
     QUESTIONS = questions;
 }
 
+//途中結果解放関数
 function updatePartialResultButton() {
     if (!partialBtn) return;  // ボタンがない画面なら何もしない
 
@@ -131,7 +132,7 @@ function render() {
 
         btn.addEventListener("click", () => {
             picks[idx] = i;
-            document.querySelectorAll(".choice").forEach(e1 => e1.classList.remove("active"));
+            document.querySelectorAll(".choice").forEach(e1 => e1.classList.remove("active"));  //buttonすべてのactiveの解除
             btn.classList.add("active");
             nextBtn.disabled = false;
 
@@ -196,6 +197,78 @@ function calcAndShowResult(options = {}) {
     const top1 = result[0];
     const top2 = result[1];
 
+    // 回答済み数（全60問中）
+    const answeredCount = picks.filter(v => v != null).length;
+
+    // normalとreverseで2問そろった能力だけを「確定スコア」として扱う
+    const complete = result.filter(a => a.count === 2);
+
+    // 下位候補（completeが少ないときは空になり得る）
+    const bottom = [...complete].sort((a, b) => a.avg - b.avg);
+
+    // 弱点表示レベル判定
+    let weaknessMode = "none"; // none | ref | growth | tendency
+    if (partial) {
+        weaknessMode = "none";   // 40問以下の途中結果では基本出さない
+        // もし「参考」を出したいなら weaknessMode = "ref"; に切替
+    } else if (answeredCount >= 60) {
+        weaknessMode = "tendency";
+    } else if (answeredCount >= 40) {
+        weaknessMode = "growth";
+    }
+
+    // 表示する弱点数
+    let weaknessCount = 0;
+    if (weaknessMode === "growth") weaknessCount = Math.min(2, bottom.length);
+    if (weaknessMode === "tendency") weaknessCount = Math.min(2, bottom.length);
+    if (weaknessMode === "ref") weaknessCount = Math.min(2, bottom.length);
+
+    const weakList = bottom.slice(0, weaknessCount);
+
+    // 弱点ブロック（HTML文字列）
+    let weaknessHtml = "";
+    if (weaknessMode === "ref") {
+        weaknessHtml = `
+    <hr/>
+    <h3>参考：現時点で低めに出ている傾向</h3>
+    <p style="color:#666; font-size:0.9rem;">※回答途中のため参考値です（質問が進むと変わる可能性があります）。</p>
+    ${weakList.map(w => `
+    <div style="margin:8px 0;">
+        <strong>${w.name_jp}</strong><br/>
+        スコア：${w.avg.toFixed(2)} / 5.00
+    </div>
+    `).join("")}
+    `;
+    }
+
+    if (weaknessMode === "growth") {
+        weaknessHtml = `
+    <hr/>
+    <h3>伸びしろ（意識すると伸ばしやすい領域）</h3>
+    ${weakList.map(w => `
+        <div style="margin:8px 0;">
+        <strong>${w.name_jp}</strong><br/>
+        スコア：${w.avg.toFixed(2)} / 5.00
+        </div>
+    `).join("")}
+    `;
+    }
+
+    if (weaknessMode === "tendency") {
+        weaknessHtml = `
+    <hr/>
+    <h3>苦手になりやすい傾向（仕事選びの注意ポイント）</h3>
+    ${weakList.map(w => `
+        <div style="margin:8px 0;">
+            <strong>${w.name_jp}</strong><br/>
+        スコア：${w.avg.toFixed(2)} / 5.00
+        </div>
+    `).join("")}
+    `;
+    }
+
+
+
 //何回診断しても書き換えれるから診断可能    partialがtrueを返せば、暫定文が入る
     resultArea.innerHTML = `
     <h3>診断結果</h3>
@@ -211,6 +284,8 @@ function calcAndShowResult(options = {}) {
     <h4>${top2.name_jp}</h4>
     <p>スコア：${top2.avg.toFixed(2)} / 5.00</p>
     <p>おすすめ職業：${top2.jobs.join("、")}</p>
+
+    ${weaknessHtml}
 
     <hr/>
     <section id="selfpr-area" style="margin-top:16px;">
