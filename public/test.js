@@ -56,6 +56,8 @@ const answerBtn = document.getElementById("submit");  //アプリ評価ボタン
 const remainBtn = document.getElementById("back");   //結果を再確認ボタン
 const appreciateArea = document.getElementById("answer-area");  //お礼エリア
 const partialBtn = document.getElementById("debug-result-btn"); //途中結果確認ボタン
+const midBtn = document.getElementById("mid-result-btn"); //中間結果確認ボタン
+
 
 // GoogleフォームのURL（自分のフォームURLに差し替える）
 const SURVEY_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc0dIa7AWO0a0Myu4HRuhKtlF6sbAxyr5pK8CoPrBHNwS3X6A/viewform?usp=header";
@@ -65,7 +67,6 @@ const SURVEY_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc0dIa7AWO0a0Myu4HR
 let idx = 0;    //質問番号
 let QUESTIONS = [];
 let picks = []; // 各問の選択index
-let score = { A: 0, B: 0, C: 0, D: 0 };
 const ANSWER = [
     "まったく当てはまらない",
     "あまり当てはまらない",
@@ -88,6 +89,7 @@ async function loadQuestions() {
         {
             key: item.name_en,
             name_jp: item.name_jp,
+            definition: item.definition,
             text: item.question_normal,  // ← 実際に表示する文
             kind: "normal",
             category: item.category,
@@ -96,6 +98,7 @@ async function loadQuestions() {
         {
             key: item.name_en,
             name_jp: item.name_jp,
+            definition: item.definition,
             text: item.question_reverse, // ← 逆転項目
             kind: "reverse",
             category: item.category,
@@ -106,16 +109,21 @@ async function loadQuestions() {
     QUESTIONS = questions;
 }
 
-//途中結果解放関数
-function updatePartialResultButton() {
-    if (!partialBtn) return;  // ボタンがない画面なら何もしない
-
+function updateResultButtons() {
     const answeredCount = picks.filter(v => v != null).length;
-    const isAfterFourthQuestion = idx >= 3; // 0,1,2,3... → 3 が4問目
 
-    // 条件を両方満たしたときだけ有効にする
-    partialBtn.disabled = !(answeredCount >= 4 && isAfterFourthQuestion);
+    // 途中結果：4問以上＋4問目以降（あなたの現仕様）
+    if (partialBtn) {
+        const isAfterFourthQuestion = idx >= 3;
+        partialBtn.disabled = !(answeredCount >= 4 && isAfterFourthQuestion);
+    }
+
+    // 中間結果：40問以上で解放（これが今回の本命）
+    if (midBtn) {
+        midBtn.disabled = !(answeredCount >= 8);
+    }
 }
+
 
 
 function render() {
@@ -136,7 +144,7 @@ function render() {
             btn.classList.add("active");
             nextBtn.disabled = false;
 
-            updatePartialResultButton();
+            updateResultButtons();
         })
         choicesEl.appendChild(btn);
     });
@@ -145,7 +153,7 @@ function render() {
     nextBtn.disabled = picks[idx] == null;      //userが回答を選択していなければ、picks[idx]の中身は空になるので,disabledがtrueになり、次へのボタンが選択されない
     progressEl.textContent = `${idx + 1} / ${QUESTIONS.length}`;     //ページ数の表示
 
-    updatePartialResultButton();
+    updateResultButtons();
 }
 
 function calcAndShowResult(options = {}) {
@@ -170,6 +178,7 @@ function calcAndShowResult(options = {}) {
             abilityScores[q.key] = {
                 key: q.key,
                 name_jp: q.name_jp,
+                definition: q.definition,
                 category: q.category,
                 jobs: q.jobs,
                 sum: 0,
@@ -185,6 +194,7 @@ function calcAndShowResult(options = {}) {
     const result = Object.values(abilityScores).map(a => ({
         key: a.key,
         name_jp: a.name_jp,
+        definition: a.definition,
         category: a.category,
         jobs: a.jobs,
         avg: a.sum / a.count,   // ここが 4.3 / 5.0 みたいな値
@@ -195,7 +205,8 @@ function calcAndShowResult(options = {}) {
     // 平均スコアで降順ソート（強み順）
     result.sort((a, b) => b.avg - a.avg);
     const top1 = result[0];
-    const top2 = result[1];
+    const top2 = result[1] ?? null;
+    console.log(result);
 
     // 回答済み数（全60問中）
     const answeredCount = picks.filter(v => v != null).length;
@@ -208,17 +219,22 @@ function calcAndShowResult(options = {}) {
 
     // 弱点表示レベル判定
     let weaknessMode = "none"; // none | ref | growth | tendency
+
+    
+
     if (partial) {
         weaknessMode = "none";   // 40問以下の途中結果では基本出さない
         // もし「参考」を出したいなら weaknessMode = "ref"; に切替
     } else if (answeredCount >= 60) {
         weaknessMode = "tendency";
     } else if (answeredCount >= 40) {
-        weaknessMode = "growth";
+        weaknessMode = "growth";   //消していい
     }
 
     // 表示する弱点数
     let weaknessCount = 0;
+
+    
     if (weaknessMode === "growth") weaknessCount = Math.min(2, bottom.length);
     if (weaknessMode === "tendency") weaknessCount = Math.min(2, bottom.length);
     if (weaknessMode === "ref") weaknessCount = Math.min(2, bottom.length);
@@ -247,7 +263,8 @@ function calcAndShowResult(options = {}) {
     <h3>伸びしろ（意識すると伸ばしやすい領域）</h3>
     ${weakList.map(w => `
         <div style="margin:8px 0;">
-        <strong>${w.name_jp}</strong><br/>
+        <strong>${w.name_jp}</strong>
+        <h5>${w.definition}</5><br/>
         スコア：${w.avg.toFixed(2)} / 5.00
         </div>
     `).join("")}
@@ -276,12 +293,14 @@ function calcAndShowResult(options = {}) {
 
     <p><strong>あなたの最も強い能力（第1位）</strong></p>
     <h4>${top1.name_jp}</h4>
+    <h5>${top1.definition}</5>
     <p>スコア：${top1.avg.toFixed(2)} / 5.00</p>
     <p>おすすめ職業：${top1.jobs.join("、")}</p>
     <hr/>
 
     <p><strong>第2位の強み</strong></p>
-    <h4>${top2.name_jp}</h4>
+    <h4>${top2.name_jp}</h4>    
+    <h5>${top2.definition}</5>
     <p>スコア：${top2.avg.toFixed(2)} / 5.00</p>
     <p>おすすめ職業：${top2.jobs.join("、")}</p>
 
@@ -305,7 +324,7 @@ function calcAndShowResult(options = {}) {
     const selfprNote = document.getElementById("selfpr-note");
     const selfprOutput = document.getElementById("selfpr-output");
 
-    selfprBtn.addEventListener("click", async () => {
+    if(selfprBtn) selfprBtn.addEventListener("click", async () => {
         selfprBtn.disabled = true;
         selfprOutput.textContent = "自己PRを生成中です…";
 
@@ -378,7 +397,7 @@ function calcAndShowResult(options = {}) {
 
         // Googleフォームを新しいタブで開くボタン
         const openFormBtn = document.getElementById("open-form-btn");
-        openFormBtn.addEventListener("click", () => {
+        if(openFormBtn) openFormBtn.addEventListener("click", () => {
             window.open(SURVEY_URL, "_blank", "noopener,noreferrer");
         });    
     });
@@ -388,20 +407,20 @@ function calcAndShowResult(options = {}) {
 }
 
 //診断ボタンをクリック
-startBtn.addEventListener("click", async() => {
+if(startBtn) startBtn.addEventListener("click", async() => {
     startBtn.disabled = true;            //診断スタートbuttonを押せないようにする
     quizArea.classList.remove("hidden");   //cssで非表示にしているclassNameからhiddenを取り除き、クイズアリアを表示している
     resultArea.classList.add("hidden");       //終了後にもう一度診断するボタンを押したとき、診断結果を非表示にするため
     reviewArea.classList.add("hidden");
     appreciateArea.classList.add("hidden");
-    idx = 0; picks = []; score = { A: 0, B: 0, C: 0, D: 0 }; //保存された回答はリセット
+    idx = 0; picks = [];//保存された回答はリセット
     await loadQuestions();
     render();
 });
 
 
 //戻るボタンへのクリック
-prevBtn.addEventListener("click", () => {
+if(prevBtn) prevBtn.addEventListener("click", () => {
     if (idx === 0) return;  //戻るボタンを押したときが最初の質門であれば、この処理は中断される
 
     //質問番号を一問戻し、質問しなおす
@@ -410,7 +429,7 @@ prevBtn.addEventListener("click", () => {
 });
 
 //次へボタンのクリック
-nextBtn.addEventListener("click", () => {
+if(nextBtn) nextBtn.addEventListener("click", () => {
     if (idx < QUESTIONS.length - 1) {    //lengthは0を含めないので配列との比較の際に-1をしている　　idxが質問数の上限を上回っていたら結果を表示する処理
         idx++;
         render();     //質問番号を一問進み、次の質問へ
@@ -421,7 +440,7 @@ nextBtn.addEventListener("click", () => {
 });
 
 //回答終了ボタン
-answerBtn.addEventListener("click", () => {
+if(answerBtn) answerBtn.addEventListener("click", () => {
     reviewArea.classList.add("hidden");
     appreciateArea.classList.remove("hidden");
     appreciateArea.innerHTML = `
@@ -435,7 +454,7 @@ answerBtn.addEventListener("click", () => {
 });
 
 //結果を再確認ボタン
-remainBtn.addEventListener("click", () => {
+if(remainBtn) remainBtn.addEventListener("click", () => {
     reviewArea.classList.add("hidden");
     resultArea.classList.remove("hidden");
 })
@@ -449,3 +468,12 @@ if (partialBtn) {
         startBtn.disabled = false;
     });
 }
+
+if (midBtn) {
+    midBtn.addEventListener("click", () => {
+        if (midBtn.disabled) return;
+        calcAndShowResult({ partial: false }); // ←正式扱い
+        startBtn.disabled = false;
+    });
+}
+
